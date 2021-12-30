@@ -9,10 +9,18 @@ import ProtectedRoute from "./auth/protected-route";
 import "./app.css";
 
 const App = () => {
-  const { isLoading } = useAuth0();
-
+  const { isLoading, logout,  error} = useAuth0();
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (typeof error !== 'undefined' && error.error === "unauthorized") { // The user does not exist. Completely log them out.
+    
+    localStorage.clear(); 
+    logout({
+      returnTo: window.location.origin,
+    });
+    
   }
 
   return (
